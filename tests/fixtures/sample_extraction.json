@@ -1,0 +1,34 @@
+{
+  "is_ledger_page": true,
+  "image_quality": "good",
+  "language_hint": "mixed",
+  "page_date": "2026-10-02",
+  "stated_page_total": 4500.0,
+  "entries": [
+    {
+      "row_number": 1,
+      "date_raw": "02/10",
+      "date": "2026-10-02",
+      "customer_name_raw": "Ramesh Kumar",
+      "customer_name_latin": "Ramesh Kumar",
+      "description": "Groceries",
+      "amount": 1250.0,
+      "entry_type": "credit",
+      "confidence": 0.95,
+      "notes": null
+    },
+    {
+      "row_number": 2,
+      "date_raw": "02/10",
+      "date": "2026-10-02",
+      "customer_name_raw": "Suresh Raina",
+      "customer_name_latin": "Suresh Raina",
+      "description": "Oil & Rice",
+      "amount": 500.0,
+      "entry_type": "payment",
+      "confidence": 0.92,
+      "notes": null
+    }
+  ],
+  "unreadable_notes": null
+}

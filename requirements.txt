@@ -1,0 +1,11 @@
+streamlit
+google-genai
+twilio
+pymongo
+dnspython
+certifi
+pydantic
+pillow
+rapidfuzz
+pandas
+pytest
