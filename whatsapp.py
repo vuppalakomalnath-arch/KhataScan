@@ -6,6 +6,7 @@ Principle: Summary numbers are computed by deterministic code, NEVER by LLM.
 
 import json
 import re
+import time
 import urllib.parse
 from typing import Any, List, Optional, Tuple
 import streamlit as st
@@ -84,7 +85,7 @@ def send_whatsapp(
     summary: str,
     content_sid: Optional[str] = None,
 ) -> Tuple[bool, str]:
-    """Dispatch WhatsApp message using Twilio Content Template (or fallback body).
+    """Dispatch WhatsApp message using Twilio Content Template (or fallback body per spec.md §15).
 
     Returns:
         (ok: bool, info: str)
@@ -100,9 +101,13 @@ def send_whatsapp(
     to_addr = f"whatsapp:{cleaned_to}"
     from_addr = from_ if from_.startswith("whatsapp:") else f"whatsapp:{from_}"
     var_2 = sanitize_template_var(summary)
+    body_text = f"Hi {user_name}, here's your KhataScan summary:\n\n{summary}"
 
-    try:
-        if content_sid:
+    # Try Content Template if provided and verified on this account
+    if content_sid:
+        try:
+            # Check if template exists on the active account
+            client.content.v1.contents(content_sid).fetch()
             content_vars = json.dumps({"1": user_name, "2": var_2}, ensure_ascii=False)
             msg = client.messages.create(
                 from_=from_addr,
@@ -110,16 +115,31 @@ def send_whatsapp(
                 content_sid=content_sid,
                 content_variables=content_vars,
             )
+            # Brief check to ensure Twilio async delivery did not error
+            time.sleep(1.5)
+            status_check = client.messages(msg.sid).fetch()
+            if status_check.status == "failed" and status_check.error_code in (63055, 63016, 63049):
+                # Fallback to direct body message per spec.md §15
+                fallback_msg = client.messages.create(
+                    from_=from_addr,
+                    to=to_addr,
+                    body=body_text,
+                )
+                return True, str(fallback_msg.sid)
+
             return True, str(msg.sid)
-        else:
-            # Fallback plain message if Content Template SID is not yet approved/configured
-            body_text = f"Hi {user_name}, here's your KhataScan summary:\n\n{summary}"
-            msg = client.messages.create(
-                from_=from_addr,
-                to=to_addr,
-                body=body_text,
-            )
-            return True, str(msg.sid)
+        except Exception:
+            # Template SID not found or rejected on this account; execute spec.md §15 fallback
+            pass
+
+    # Direct body delivery (standard fallback supported by Twilio Sandbox within 24h window)
+    try:
+        msg = client.messages.create(
+            from_=from_addr,
+            to=to_addr,
+            body=body_text,
+        )
+        return True, str(msg.sid)
     except Exception as e:
         return False, str(e)
 
