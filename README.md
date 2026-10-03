@@ -189,3 +189,5 @@ Test suite coverage:
 5. **Ledger Chat:** Ask the assistant: *"Who owes me the most?"* Notice the AI answers strictly from the code-computed context.
 6. **Generate Reminders:** In the **Dues & Reminders** tab, pick a customer, choose Telugu or Hindi, and generate a polite reminder draft. Click **📲 Open WhatsApp** to inspect the ready-to-send message.
 7. **Send WhatsApp Summary:** Click **📤 Send to WhatsApp** in the top header. Confirm the delivery of the single-line dues summary directly to your mobile device.
+#   K h a t a S c a n  
+ 
