@@ -161,10 +161,23 @@ def render_onboarding():
         try:
             db = get_db()
         except Exception as e:
-            st.error(
-                f"⚠️ Database connection failed: {e}. "
-                "Please configure `MONGODB_URI` in `.streamlit/secrets.toml`."
-            )
+            err_str = str(e)
+            if "TLSV1_ALERT_INTERNAL_ERROR" in err_str or "ServerSelectionTimeoutError" in err_str or "SSL handshake failed" in err_str:
+                st.error(
+                    "⚠️ **MongoDB Atlas IP Access Blocked:**\n\n"
+                    "MongoDB Atlas rejected the connection during TLS handshake (`SSL alert number 80`). "
+                    "This occurs because your IP address is not allowed in Atlas **Network Access**.\n\n"
+                    "**How to fix in 30 seconds:**\n"
+                    "1. Go to your [MongoDB Atlas Dashboard](https://cloud.mongodb.com).\n"
+                    "2. In the left sidebar under **Security**, click **Network Access**.\n"
+                    "3. Click **Add IP Address** → click **ALLOW ACCESS FROM ANYWHERE** (`0.0.0.0/0`) → click **Confirm**.\n"
+                    "4. Wait ~1 minute for the status to show **Active**, then click **Continue to Ledger** again."
+                )
+            else:
+                st.error(
+                    f"⚠️ Database connection failed: {e}. "
+                    "Please ensure `MONGODB_URI` is correctly configured in `.streamlit/secrets.toml`."
+                )
             return
 
         existing_shop = get_shop_by_whatsapp(db, normalized_phone)
