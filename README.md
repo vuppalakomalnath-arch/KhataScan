@@ -189,5 +189,19 @@ Test suite coverage:
 5. **Ledger Chat:** Ask the assistant: *"Who owes me the most?"* Notice the AI answers strictly from the code-computed context.
 6. **Generate Reminders:** In the **Dues & Reminders** tab, pick a customer, choose Telugu or Hindi, and generate a polite reminder draft. Click **📲 Open WhatsApp** to inspect the ready-to-send message.
 7. **Send WhatsApp Summary:** Click **📤 Send to WhatsApp** in the top header. Confirm the delivery of the single-line dues summary directly to your mobile device.
-#   K h a t a S c a n  
- 
+
+---
+
+## 10. Live Demo Link & Repository
+
+- **Live Application:** [https://khatascan.streamlit.app/](https://khatascan.streamlit.app/)
+- **GitHub Repository:** [https://github.com/vuppalakomalnath-arch/KhataScan](https://github.com/vuppalakomalnath-arch/KhataScan)
+
+---
+
+## 11. Resume Bullets
+
+- Built **KhataScan**, a Gemini-vision + Streamlit web app that digitises handwritten shop credit ledgers into schema-validated MongoDB records, with an interactive human verification step before persisting data.
+- Designed a hybrid architecture where the multimodal LLM extracts rows and drafts communications while deterministic Python logic handles currency conversion (integer paise), duplicate transaction detection, fuzzy customer matching, and balances.
+- Delivered automated dues summaries and multilingual payment reminders through Twilio WhatsApp (Content Templates) and direct WhatsApp deep links.
+- Implemented robust multi-tenant data isolation, security hardening with salted PBKDF2 hashing, and a one-click 'Delete My Data' privacy compliance mechanism.
